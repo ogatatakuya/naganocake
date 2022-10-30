@@ -1,0 +1,46 @@
+
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-md-2">
+      
+    </div>
+    <div class="col-md-3">
+      <%= image_tag @item.image %>
+    </div>
+    <div class="col-md-7">
+      
+      <table class="table">
+        <tbody>
+        <tr>
+          <td colspan="2"><%= @item.name %></td>
+        </tr>
+        <tr>
+          <td colspan="2"><%= @item.introduction %></td>
+        </tr>
+        <tr>
+          <td colspan="2">￥<%= (@item.price * 1.1).floor.to_s(:delimited) %>(税込)</td>
+        </tr>
+      
+        
+        <%# if @item.is_active == true %>
+        <tr>
+          <td>
+          <%= form_with model: @cart_items, url: cart_items_path do |f| %>
+          
+          <%= f.hidden_field :item_id, :value => @item.id %>
+          <%= f.number_field :amount, placeholder: "個数選択", min:1, max:3, style: "width:150px;" %>
+          <%= f.submit 'カートに入れる', class:"btn btn-lg btn-success", style: "border-radius: 5px; margin-left: 100px;" %>
+          
+          <% end %>
+          </td>
+        </tr>
+        <%# else %>
+          <!--<td><h3>販売停止中</h3></td>-->
+        <%# end %>
+        
+        
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-md-3 offset-md-1">
+      <h4><span class="pr-4 pl-4" style="background-color:whitesmoke;">商品新規登録</span></h4>
+    </div>
+  </div>
+  <% if @item.errors.any? %>
+  <%= @item.errors.count %>件のエラーが発生しました
+    <ul>
+      <% @item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+ <div class="row mt-5">
+    <div class="col-md-7 offset-md-2">
+    
+            <%= form_with model: @item,url: admin_items_path do |f| %>
+            <table class="table">
+              <tr>
+                <td><%= f.label :image, "商品画像"%></td>
+                <td><%= f.file_field :image, accept: "image/*" %></td>
+              </tr>
+              <tr>
+                <td class="col-md-3"><%= f.label :name, "商品名"%></td>
+                <td><%= f.text_field :name, class: "form-control", style: "width:400px;" %></td>
+              </tr>
+              <tr>
+                <td><%= f.label :introduction, "商品説明"%></td>
+                <td><%= f.text_area :introduction, class: "form-control", style: "width:400px;" %></td>
+              </tr>
+              <tr>
+                <td><%= f.label :genre, "ジャンル"%></td>
+                <td><%= f.collection_select(:genre_id, @genres, :id, :name)  %></td>
+              </tr>
+              <tr>
+                <td><%= f.label :price, "税抜価格"%></td>
+                <td><%= f.number_field :price, class: "form-control", style: "width:400px;" %></td>
+                <td>円</td>
+              </tr>
+              <tr>
+                <td><%= f.label :is_active, "販売ステータス"%></td>
+                <td><%= f.radio_button :is_active, :true  %>販売中
+                    <%= f.radio_button :is_active, :false  %>販売停止中</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="text-center"><%= f.submit '新規登録', class:"btn btn-lg btn-success", style: "border-radius: 10px;" %></td>
+              </tr>
+            </table>
+            <% end %>
+            
+      </div>
+    </div>
+  </div>
+</div>

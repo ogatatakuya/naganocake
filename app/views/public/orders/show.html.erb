@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-10 offset-md-1">
+      <h4><span class="pr-4 pl-4" style="background-color:whitesmoke;">注文履歴詳細</span></h4>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-8">
+      <h6>注文情報</h6>
+    </div>
+    <div class="col-4">
+      <h6>請求情報</h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <table class="table table-bordered">
+        
+          <tr>
+            <td style="background-color:whitesmoke; width:150px;">注文日</td>
+            <td><%= @order.created_at.strftime('%Y/%m/%d') %></td>
+          </tr>
+          <tr>
+            <td style="background-color:whitesmoke;">配送先</td>
+            <td>〒<%= @order.postal_code %></br><%= @order.address %></br><%= @order.name %></td>
+          </tr>
+          <tr>
+            <td style="background-color:whitesmoke;">支払方法</td>
+            <td><%= @order.payment_i18n %></td>
+          </tr>
+          <tr>
+            <td style="background-color:whitesmoke;">ステータス</td>
+            <td></td>
+          </tr>
+        
+      </table>
+    </div>
+    <% @order.order_details.each do |order_detail| %>
+      <% @total +=  order_detail.subtotal %>
+    <% end %>
+    <div class="col-lg-4">
+      <table class="table table-bordered">
+        
+        <tr>
+          <td style="background-color:whitesmoke;">商品合計</td>
+          
+          <td><%= @total.floor.to_s(:delimited) %></td>
+        </tr>
+        
+        <tr>
+          <td style="background-color:whitesmoke;">配送料</td>
+          <td><%= @order.postage %></td>
+        </tr>
+        <tr>
+          <td style="background-color:whitesmoke;">ご請求額</td>
+          <% @order.billing_amount = @order.postage + @total %>
+          <td><%= @order.billing_amount.floor.to_s(:delimited) %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <h6>注文内容</h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10">
+      <table class="table table-bordered">
+        <tr style="background-color:whitesmoke;">
+          <td style="width:600px;">商品</td>
+          <td>単価(税込)</td>
+          <td>個数</td>
+          <td>小計</td>
+        </tr>
+        <% @order.order_details.each do |order_detail| %>
+          <tr>
+            <td><%= order_detail.item.name %></td>
+            <td><%= order_detail.item.with_tax_price.floor.to_s(:delimited) %></td>
+            <td><%= order_detail.amount %></td>
+            <td><%= order_detail.subtotal.floor.to_s(:delimited) %></td>
+          </tr>
+          <% end %>
+      </table>
+    </div>
+  </div>
+</div>
+  
